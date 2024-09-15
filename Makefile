@@ -9,13 +9,20 @@ help:
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 .PHONY: help
 
-run: db-up migrate-up ### Run app and migrate up
-	$(DOCKER_COMPOSE) up --build app
+run: db-up migrate-up app-up ### Run app and migrate up
 .PHONY: run
 
 stop: migrate-down ### Stop all containers and migrate down
 	$(DOCKER_COMPOSE) down
 .PHONY: stop
+
+app-up: ### Start app
+	$(DOCKER_COMPOSE) up --build -d app
+.PHONY: app-up
+
+app-down: ### Stop app
+	$(DOCKER_COMPOSE) down app
+.PHONY: app-down
 
 wait-db: ### Wait until db is ready
 	@until docker exec -t $(shell docker compose ps -q db) pg_isready -U $(DB_USERNAME); do sleep 1; done
@@ -36,3 +43,11 @@ db-up: ### Start db
 db-down: ### Stop db
 	$(DOCKER_COMPOSE) down db
 .PHONY: db-down
+
+logs: ### Show logs
+	@echo "Showing logs..."
+	$(DOCKER_COMPOSE) logs -f
+.PHONY: logs
+
+restart: stop run ### Restart containers
+.PHONY: restart
