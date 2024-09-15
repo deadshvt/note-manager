@@ -8,10 +8,10 @@ use Mojolicious::Lite;
 
 use Log::Log4perl;
 
-use note_manager::config::config;
-use note_manager::repository::repository;
-use note_manager::repository::database::postgres::postgres;
-use note_manager::delivery::http::handler;
+use aliased 'note_manager::config::config' => 'Config';
+use aliased 'note_manager::repository::repository' => 'Repository';
+use aliased 'note_manager::repository::database::postgres::postgres' => 'Database';
+use aliased 'note_manager::delivery::http::handler' => 'Handler';
 
 Log::Log4perl->init('log4perl.conf');
 my $logger = Log::Log4perl->get_logger();
@@ -23,13 +23,13 @@ sub info {
 
 info("Loading config...");
 
-my $config = note_manager::config::config::load();
+my $config = Config->load();
 
 info("Loaded config");
 
 info("Connecting to database...");
 
-my $db = note_manager::repository::database::postgres::postgres->new(
+my $db = Database->new(
     dsn => $config->{dsn},
     username => $config->{username},
     password => $config->{password},
@@ -37,11 +37,11 @@ my $db = note_manager::repository::database::postgres::postgres->new(
 
 info("Connected to database");
 
-my $repository = note_manager::repository::repository->new(
+my $repository = Repository->new(
     db => $db
 );
 
-my $handler = note_manager::delivery::http::handler->new(
+my $handler = Handler->new(
     repository => $repository
 );
 

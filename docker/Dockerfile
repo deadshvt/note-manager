@@ -1,6 +1,6 @@
 FROM perl:latest
 
-RUN cpanm --notest Moo Log::Log4perl DBI DBD::Pg Config::Tiny Mojolicious
+RUN cpanm --notest Moo Log::Log4perl DBI DBD::Pg Config::Tiny Mojolicious aliased
 
 RUN mkdir -p /usr/src/app/logs
 

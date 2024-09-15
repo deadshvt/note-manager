@@ -9,7 +9,7 @@ with 'note_manager::repository::database::database';
 use DBI;
 use Log::Log4perl;
 
-use note_manager::entity::note;
+use aliased 'note_manager::entity::note' => 'Note';
 
 has 'dsn'      => (is => 'ro', required => 1);
 has 'username' => (is => 'ro', required => 1);
@@ -70,7 +70,7 @@ sub get_note_by_id {
         return { error => "Note not found" };
     }
 
-    return note_manager::entity::note->new($row);
+    return Note->new($row);
 }
 
 sub create_note {
@@ -88,7 +88,7 @@ sub create_note {
         return { error => $@ };
     }
 
-    return note_manager::entity::note->new($sth->fetchrow_hashref);
+    return Note->new($sth->fetchrow_hashref);
 }
 
 sub update_note {
@@ -111,7 +111,7 @@ sub update_note {
         return { error => $@ };
     }
 
-    return defined $result ? $result : note_manager::entity::note->new($sth->fetchrow_hashref);
+    return defined $result ? $result : Note->new($sth->fetchrow_hashref);
 }
 
 sub delete_note {
@@ -153,7 +153,7 @@ sub get_notes {
 
     my @notes;
     while (my $row = $sth->fetchrow_hashref) {
-        push @notes, note_manager::entity::note->new($row);
+        push @notes, Note->new($row);
     }
 
     return \@notes;
