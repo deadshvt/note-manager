@@ -1,4 +1,4 @@
-package note_manager::entity::note;
+package NoteManager::Entity::Note;
 
 use strict;
 use warnings;

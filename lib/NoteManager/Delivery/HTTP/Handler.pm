@@ -1,4 +1,4 @@
-package note_manager::delivery::http::handler;
+package NoteManager::Delivery::HTTP::Handler;
 
 use strict;
 use warnings;

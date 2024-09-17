@@ -9,7 +9,7 @@ help:
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 .PHONY: help
 
-run: db-up migrate-up app-up ### Run app and migrate up
+run: db-up migrate-up cache-up app-up ### Run app and migrate up
 .PHONY: run
 
 stop: migrate-down ### Stop all containers and migrate down
@@ -43,6 +43,14 @@ db-up: ### Start db
 db-down: ### Stop db
 	$(DOCKER_COMPOSE) down db
 .PHONY: db-down
+
+cache-up: ### Start cache
+	$(DOCKER_COMPOSE) up -d cache
+.PHONY: cache-up
+
+cache-down: ### Stop cache
+	$(DOCKER_COMPOSE) down cache
+.PHONY: cache-down
 
 logs: ### Show logs
 	@echo "Showing logs..."

@@ -1,15 +1,15 @@
-package note_manager::repository::database::postgres::postgres;
+package NoteManager::Repository::Database::Postgres::Postgres;
 
 use strict;
 use warnings;
 
 use Moo;
-with 'note_manager::repository::database::database';
+with 'NoteManager::Repository::Database::Database';
 
 use DBI;
 use Log::Log4perl;
 
-use aliased 'note_manager::entity::note' => 'Note';
+use aliased 'NoteManager::Entity::Note' => 'Note';
 
 has 'dsn'      => (is => 'ro', required => 1);
 has 'username' => (is => 'ro', required => 1);
