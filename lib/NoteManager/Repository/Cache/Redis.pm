@@ -1,10 +1,10 @@
-package NoteManager::Repository::Cache::Redis::Redis;
+package NoteManager::Repository::Cache::Redis;
 
 use strict;
 use warnings;
 
 use Moo;
-with 'NoteManager::Repository::Cache::Cache';
+with 'NoteManager::Repository::Cache';
 
 use Redis;
 use Log::Log4perl;

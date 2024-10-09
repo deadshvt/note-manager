@@ -8,11 +8,11 @@ use Mojolicious::Lite;
 
 use Log::Log4perl;
 
-use aliased 'NoteManager::Config::Config' => 'Config';
+use aliased 'NoteManager::Config' => 'Config';
 use aliased 'NoteManager::Delivery::HTTP::Handler' => 'Handler';
-use aliased 'NoteManager::Repository::Cache::Redis::Redis' => 'Cache';
-use aliased 'NoteManager::Repository::Database::Postgres::Postgres' => 'Database';
-use aliased 'NoteManager::Repository::Repository' => 'Repository';
+use aliased 'NoteManager::Repository::Cache::Redis' => 'Cache';
+use aliased 'NoteManager::Repository::Database::Postgres' => 'Database';
+use aliased 'NoteManager::Repository' => 'Repository';
 
 Log::Log4perl->init('log4perl.conf');
 my $logger = Log::Log4perl->get_logger();

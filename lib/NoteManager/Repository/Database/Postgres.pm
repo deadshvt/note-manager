@@ -1,10 +1,10 @@
-package NoteManager::Repository::Database::Postgres::Postgres;
+package NoteManager::Repository::Database::Postgres;
 
 use strict;
 use warnings;
 
 use Moo;
-with 'NoteManager::Repository::Database::Database';
+with 'NoteManager::Repository::Database';
 
 use DBI;
 use Log::Log4perl;

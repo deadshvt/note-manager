@@ -1,4 +1,4 @@
-package NoteManager::Repository::Database::Database;
+package NoteManager::Repository::Database;
 
 use strict;
 use warnings;

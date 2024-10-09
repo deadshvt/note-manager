@@ -1,4 +1,4 @@
-package NoteManager::Repository::Cache::Cache;
+package NoteManager::Repository::Cache;
 
 use strict;
 use warnings;

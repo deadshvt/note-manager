@@ -1,4 +1,4 @@
-package NoteManager::Config::Config;
+package NoteManager::Config;
 
 use strict;
 use warnings;
