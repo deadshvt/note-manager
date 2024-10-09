@@ -71,7 +71,7 @@ make restart
 
 ### 2. **Get a Note by ID**
 
-- **URL**: `/note/:id`
+- **URL**: `/note/{id}`
 - **Method**: `GET`
 - **Response**:
     - `200 OK`
@@ -94,7 +94,7 @@ make restart
 
 ### 3. **Update a Note**
 
-- **URL**: `/note/:id`
+- **URL**: `/note/{id}`
 - **Method**: `PUT`
 - **Headers**: `Content-Type: application/json`
 - **Request Body**:
@@ -124,7 +124,7 @@ make restart
 
 ### 4. **Delete a Note**
 
-- **URL**: `/note/:id`
+- **URL**: `/note/{id}`
 - **Method**: `DELETE`
 - **Response**:
     - `204 No Content` on success.
