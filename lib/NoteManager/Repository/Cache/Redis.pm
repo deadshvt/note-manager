@@ -7,7 +7,10 @@ use Moo;
 with 'NoteManager::Repository::Cache';
 
 use Redis;
-use Log::Log4perl;
+
+use Logger;
+
+my $log = Logger::get_logger('redis');
 
 has 'host' => (is => 'ro', required => 1);
 has 'port' => (is => 'ro', required => 1);
@@ -28,7 +31,8 @@ has 'redis' => (
         };
 
         if ($@) {
-            error("Redis connection failed: $@");
+            $log->('error', "Redis connection failed: $@");
+
             return { error => "Failed to connect to redis: $@" };
         }
 
@@ -36,18 +40,10 @@ has 'redis' => (
     }
 );
 
-Log::Log4perl->init('log4perl.conf');
-my $logger = Log::Log4perl->get_logger();
-
-sub info {
-    my ($message) = @_;
-    $logger->info("[COMPONENT=redis] $message");
-}
-
 sub get {
     my ($self, $key) = @_;
 
-    info("Getting note with key=\'" . $key . "\'");
+    $log->('info', "Getting note with key=\'" . $key . "\'");
 
     return $self->redis->get($key);
 }
@@ -55,7 +51,7 @@ sub get {
 sub set {
     my ($self, $key, $value) = @_;
 
-    info("Setting note with key=\'" . $key . "\'");
+    $log->('info', "Setting note with key=\'" . $key . "\'");
 
     $self->redis->set($key, $value);
     $self->redis->expire($key, $self->expiration);
@@ -64,7 +60,7 @@ sub set {
 sub delete {
     my ($self, $key) = @_;
 
-    info("Deleting note with key=\'" . $key . "\'");
+    $log->('info', "Deleting note with key=\'" . $key . "\'");
 
     $self->redis->del($key);
 }

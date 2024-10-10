@@ -7,9 +7,12 @@ use Moo;
 with 'NoteManager::Repository::Database';
 
 use DBI;
-use Log::Log4perl;
+
+use Logger;
 
 use aliased 'NoteManager::Entity::Note' => 'Note';
+
+my $log = Logger::get_logger('postgres');
 
 has 'dsn'      => (is => 'ro', required => 1);
 has 'username' => (is => 'ro', required => 1);
@@ -29,7 +32,8 @@ has 'dbh' => (
         };
 
         if ($@) {
-            error("Database connection failed: $@");
+            $log->('error', "Database connection failed: $@");
+
             return { error => "Failed to connect to database: $@" };
         }
 
@@ -37,24 +41,11 @@ has 'dbh' => (
     }
 );
 
-Log::Log4perl->init('log4perl.conf');
-my $logger = Log::Log4perl->get_logger();
-
-sub info {
-    my ($message) = @_;
-    $logger->info("[COMPONENT=postgres] $message");
-}
-
-sub error {
-    my ($message) = @_;
-    $logger->error("[COMPONENT=postgres] $message");
-}
-
 sub get_note_by_id {
     my ($self, $id) = @_;
 
-    info("Getting note with id=\'" . $id . "\'");
-    
+    $log->('info', "Getting note with id=\'" . $id . "\'");
+
     my $sth;
     eval {
         $sth = $self->dbh->prepare('SELECT id, text, created_at, updated_at FROM note WHERE id = ?');
@@ -76,8 +67,8 @@ sub get_note_by_id {
 sub create_note {
     my ($self, $data) = @_;
 
-    info("Creating note with text=\'" . $data->{text} . "\'");
-    
+    $log->('info', "Creating note with text=\'" . $data->{text} . "\'");
+
     my $sth;
     eval {
         $sth = $self->dbh->prepare('INSERT INTO note (text, created_at, updated_at) VALUES (?, NOW(), NOW()) RETURNING id, text, created_at, updated_at');
@@ -94,8 +85,8 @@ sub create_note {
 sub update_note {
     my ($self, $id, $data) = @_;
 
-    info("Updating note with id=\'" . $id . "\'");
-    
+    $log->('info', "Updating note with id=\'" . $id . "\'");
+
     my $result;
     my $sth;
     eval {
@@ -117,7 +108,7 @@ sub update_note {
 sub delete_note {
     my ($self, $id) = @_;
 
-    info("Deleting note with id=\'" . $id . "\'");
+    $log->('info', "Deleting note with id=\'" . $id . "\'");
 
     my $result;
     eval {
@@ -139,8 +130,8 @@ sub delete_note {
 sub get_notes {
     my ($self, $order_by) = @_;
 
-    info("Getting notes by order_by=\'" . $order_by . "\'");
-    
+    $log->('info', "Getting notes by order_by=\'" . $order_by . "\'");
+
     my $sth;
     eval {
         $sth = $self->dbh->prepare("SELECT id, text, created_at, updated_at FROM note ORDER BY $order_by");
