@@ -1,6 +1,6 @@
 FROM perl:latest
 
-RUN cpanm --notest Moo Log::Log4perl DBI DBD::Pg Config::Tiny Mojolicious aliased Redis JSON
+RUN cpanm --notest Moo Log::Log4perl DBI DBD::Pg Config::Tiny Mojolicious aliased Redis JSON HTTP::Status
 
 RUN mkdir -p /usr/src/app/logs
 

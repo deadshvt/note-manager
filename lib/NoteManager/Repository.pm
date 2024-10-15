@@ -18,7 +18,7 @@ my $log = Logger::get_logger('repository');
 sub get_note_by_id {
     my ($self, $id) = @_;
 
-    $log->('info', "Getting note with id=\'" . $id . "\'");
+    $log->('info', "Getting note with ID=\'" . $id . "\'");
 
     if (my $cached_note = $self->cache->get("note_$id")) {
         my $note;
@@ -27,7 +27,7 @@ sub get_note_by_id {
         };
 
         unless ($@) {
-            $log->('info', "Got note with id=\'" . $id . "\' from cache");
+            $log->('info', "Got note with ID=\'" . $id . "\' from cache");
 
             return Note->new($note);
         }
@@ -36,7 +36,7 @@ sub get_note_by_id {
     }
 
     my $result = $self->db->get_note_by_id($id);
-    unless (exists $result->{error}) {
+    unless (ref $result eq 'HASH' && exists $result->{error}) {
         $self->cache->set("note_$id", encode_json($result->to_hash));
     }
 
@@ -49,7 +49,7 @@ sub create_note {
     $log->('info', "Creating note with text=\'" . $data->{text} . "\'");
 
     my $result = $self->db->create_note($data);
-    unless (exists $result->{error}) {
+    unless (ref $result eq 'HASH' && exists $result->{error}) {
         $self->cache->set("note_" . $result->{id}, encode_json($result->to_hash));
     }
 
@@ -59,10 +59,10 @@ sub create_note {
 sub update_note {
     my ($self, $id, $data) = @_;
 
-    $log->('info', "Updating note with id=\'" . $id . "\'");
+    $log->('info', "Updating note with ID=\'" . $id . "\'");
 
     my $result = $self->db->update_note($id, $data);
-    unless (exists $result->{error}) {
+    unless (ref $result eq 'HASH' && exists $result->{error}) {
         $self->cache->set("note_$id", encode_json($result->to_hash));
     }
 
@@ -72,10 +72,10 @@ sub update_note {
 sub delete_note {
     my ($self, $id) = @_;
 
-    $log->('info', "Deleting note with id=\'" . $id . "\'");
+    $log->('info', "Deleting note with ID=\'" . $id . "\'");
 
     my $result = $self->db->delete_note($id);
-    unless (exists $result->{error}) {
+    unless (ref $result eq 'HASH' && exists $result->{error}) {
         $self->cache->delete("note_$id");
     }
 

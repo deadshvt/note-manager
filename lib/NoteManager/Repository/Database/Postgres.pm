@@ -10,6 +10,7 @@ use DBI;
 
 use Logger;
 
+use aliased 'NoteManager::Constants' => 'Constants';
 use aliased 'NoteManager::Entity::Note' => 'Note';
 
 my $log = Logger::get_logger('postgres');
@@ -44,7 +45,7 @@ has 'dbh' => (
 sub get_note_by_id {
     my ($self, $id) = @_;
 
-    $log->('info', "Getting note with id=\'" . $id . "\'");
+    $log->('info', "Getting note with ID=\'" . $id . "\'");
 
     my $sth;
     eval {
@@ -58,7 +59,7 @@ sub get_note_by_id {
 
     my $row = $sth->fetchrow_hashref;
     if (!$row) {
-        return { error => "Note not found" };
+        return { error => $Constants::ERROR_NOTE_NOT_FOUND };
     }
 
     return Note->new($row);
@@ -85,7 +86,7 @@ sub create_note {
 sub update_note {
     my ($self, $id, $data) = @_;
 
-    $log->('info', "Updating note with id=\'" . $id . "\'");
+    $log->('info', "Updating note with ID=\'" . $id . "\'");
 
     my $result;
     my $sth;
@@ -94,7 +95,7 @@ sub update_note {
         $sth->execute($data->{text}, $id);
 
         if ($sth->rows == 0) {
-            $result = { error => "Note not found" };
+            $result = { error => $Constants::ERROR_NOTE_NOT_FOUND };
         }
     };
 
@@ -108,7 +109,7 @@ sub update_note {
 sub delete_note {
     my ($self, $id) = @_;
 
-    $log->('info', "Deleting note with id=\'" . $id . "\'");
+    $log->('info', "Deleting note with ID=\'" . $id . "\'");
 
     my $result;
     eval {
@@ -116,7 +117,7 @@ sub delete_note {
         $sth->execute($id);
 
         if ($sth->rows == 0) {
-            $result = { error => "Note not found" };
+            $result = { error => $Constants::ERROR_NOTE_NOT_FOUND };
         }
     };
 
