@@ -48,7 +48,7 @@ make restart
 
 ### 1. **Create a New Note**
 
-- **URL**: `/note`
+- **Path**: `/note`
 - **Method**: `POST`
 - **Headers**: `Content-Type: application/json`
 - **Request Body**:
@@ -71,10 +71,10 @@ make restart
 
 ### 2. **Get a Note by ID**
 
-- **URL**: `/note/{id}`
+- **Path**: `/note/{id}`
 - **Method**: `GET`
 - **Response**:
-    - `200 OK`
+    - `200 OK` on success
     - Response body:
         ```json
         {
@@ -85,7 +85,8 @@ make restart
         }
         ```
 
-    - `404 Not Found` if note doesn't exist:
+    - `404 Not Found` if note ain't exist
+    - Response body:
         ```json
         {
             "error": "Note not found"
@@ -94,7 +95,7 @@ make restart
 
 ### 3. **Update a Note**
 
-- **URL**: `/note/{id}`
+- **Path**: `/note/{id}`
 - **Method**: `PUT`
 - **Headers**: `Content-Type: application/json`
 - **Request Body**:
@@ -104,7 +105,7 @@ make restart
     }
     ```
 - **Response**:
-    - `200 OK`
+    - `200 OK` on success
     - Response body:
         ```json
         {
@@ -115,7 +116,8 @@ make restart
         }
         ```
 
-    - `404 Not Found` if note doesn't exist:
+    - `404 Not Found` if note ain't exist
+    - Response body:
         ```json
         {
             "error": "Note not found"
@@ -124,11 +126,13 @@ make restart
 
 ### 4. **Delete a Note**
 
-- **URL**: `/note/{id}`
+- **Path**: `/note/{id}`
 - **Method**: `DELETE`
 - **Response**:
-    - `204 No Content` on success.
-    - `404 Not Found` if note doesn't exist:
+    - `204 No Content` on success
+
+    - `404 Not Found` if note ain't exist
+    - Response body:
         ```json
         {
             "error": "Note not found"
@@ -137,12 +141,12 @@ make restart
 
 ### 5. **Get All Notes**
 
-- **URL**: `/note`
+- **Path**: `/note`
 - **Method**: `GET`
 - **Query Parameters**:
     - `order_by`: `id`, `created_at`, or `updated_at`. Default: `id`
 - **Response**:
-    - `200 OK`
+    - `200 OK` on success
     - Response body:
         ```json
         [
