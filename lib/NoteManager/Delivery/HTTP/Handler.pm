@@ -132,6 +132,7 @@ sub register {
         }
 
         $log->('info', "Deleted note with ID=\'" . $id . "\'");
+        
         return $c->rendered(HTTP_NO_CONTENT);
     });
 

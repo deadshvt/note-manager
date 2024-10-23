@@ -12,6 +12,7 @@ has 'updated_at' => (is => 'ro', required => 1);
 
 sub to_hash {
     my $self = shift;
+
     return {
         id         => $self->id,
         text       => $self->text,
